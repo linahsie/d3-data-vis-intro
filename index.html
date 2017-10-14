@@ -13,7 +13,8 @@
 	</style>
 </head>
 <body>
-	<div id="chart"></div>
+    <!-- visualization stuff here -->
+	<div id="chart"></div> 
 </body>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
@@ -40,14 +41,15 @@
 
 	// uncomment for creating one rectangle!
 	// -----------------------------------------------------------------------------
-	// var rect = g.append("rect")
-	//             .attr("x", 20)
-	// 	    	   .attr("y", 40)
-	// 	           .attr("width", 250)
-	// 	           .attr("height", 105)
-	// 	           .style("fill", "#1abc9c")
-	// 	           .style("stroke", "#16a085")
-	// 	           .style("stroke-width", "3px");
+    /* var rect = g.append("rect")
+	             .attr("x", 20)
+	 	    	   .attr("y", 40)
+	 	           .attr("width", 250)
+	 	           .attr("height", 105)
+	 	           .style("fill", "#1abc9c")
+	 	           .style("stroke", "#16a085")
+	 	           .style("stroke-width", "3px");
+    */
 	// -----------------------------------------------------------------------------
 
 		// data
@@ -68,53 +70,64 @@
 	// Uncomment for binding data!
 	// ---------------------------------------------------------------
 	// instead of creating one rect, create multiple rects!
-	// var rects = g.selectAll("rect")
-	// 	     .data(tags)
-	// 	     .enter()
-	// 	     .append("rect")
-	// 	     .attr("x", function(d, i) { return i * 30 })
-	// 	     .attr("y", 0)
-	// 	     .attr("width", 20)
-	// 	     .attr("height", function(d) { return d.count/2})
-	// 	     .style("fill", "#1abc9c")
-	// 	     .style("stroke", "#16a085")
-	// 	     .style("stroke-width", "3px");
+    /*
+	 var rects = g.selectAll("rect") //d3 looking for all rectangles, for each rect will bind
+	 	     .data(tags)
+	 	     .enter()
+	 	     .append("rect")
+	 	     .attr("x", function(d, i) { return i * 30 })
+	 	     // .attr("y", 0)
+              .attr("y", function(d, i) { return height - (d.count/2); })
+	 	     .attr("width", 20)
+	 	     .attr("height", function(d) { return d.count/2})
+	 	     .style("fill", "#1abc9c")
+	 	     .style("stroke", "#16a085")
+	 	     .style("stroke-width", "3px");
+    */
 	// ---------------------------------------------------------------
 
 
 	// Uncomment for bar graph with scales!
 	// ----------------------------------------------------------------
-	// var x = d3.scaleBand()
-	// 		  .rangeRound([0, width])
-	// 		  .domain(tags.map(function(d) { return d.name; }))
-	// 		  .padding(0.3);
+    
+	var x = d3.scaleBand()
+	 		  .rangeRound([0, width])
+	 		  .domain(tags.map(function(d) { return d.name; }))
+	 		  .padding(0.3);
 
-	// var y = d3.scaleLinear()
-	// 		  .range([height, 0])
-	// 		  .domain([0, d3.max(tags, function(d) { return d.count; })]);
+	var y = d3.scaleLinear()
+	 		  .range([height, 0])
+	 		  .domain([0, d3.max(tags, function(d) { return d.count; })]);
 
-	// var rects = g.selectAll("rect")
-	// 			 .data(tags)
-	// 			 .enter()
-	// 			 .append("rect")
-	// 			 .attr("x", function(d) { return x(d.name); })
-	// 			 .attr("y", function(d) { return y(d.count); })
-	// 			 .attr("width", x.bandwidth())
-	// 			 .attr("height", function(d) { return height - y(d.count); })
-	// 			 .style("fill", "#1abc9c")
-	// 	    	 .style("stroke", "#16a085")
-	// 	    	 .style("stroke-width", "3px");
+    var rects = g.selectAll("rect")
+	 			 .data(tags)
+	 			 .enter()
+	 			 .append("rect")
+	 			 .attr("x", function(d) { return x(d.name); })
+	 			 .attr("y", function(d) { return y(d.count); })
+	 			 .attr("width", x.bandwidth())
+	 			 .attr("height", function(d) { return height - y(d.count); })
+	 			 .style("fill", "#1abc9c")
+	 	    	 .style("stroke", "#16a085")
+	 	    	 .style("stroke-width", "3px")
+                 .on("mouseover", function(d) {
+                     d3.select(this).style("fill", "#bdc3c7")
+                 })
+                 .on("mouseout", function(d) {
+                     d3.select(this).style("fill", "#16a085")
+                 })
+    
 		    	 
     // ------------------------------------------------------------------
 
     // Uncomment for axes labels
     // ---------------------------------------------------- 
-    // g.append("g")
-    //    .attr("transform", "translate(0," + height + ")")
-    //    .call(d3.axisBottom(x));
+     g.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
 
-    // g.append("g")
-    //    .call(d3.axisLeft(y));
+     g.append("g")
+        .call(d3.axisLeft(y));
     //-----------------------------------------------------
 
 </script>
